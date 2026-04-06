@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard — WriteSpace{% endblock %}
+
+{% block content %}
+<div class="min-h-screen">
+    <!-- Gradient Banner Header -->
+    <div class="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex items-center space-x-4">
+                <span class="text-4xl">👑</span>
+                <div>
+                    <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+                    <p class="mt-1 text-purple-100">Welcome back, {{ user.first_name|default:user.username }}. Here's an overview of your platform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stat Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <!-- Total Posts -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Posts</p>
+                        <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{{ total_posts }}</p>
+                    </div>
+                    <div class="bg-blue-100 dark:bg-blue-900/30 rounded-full p-3">
+                        <span class="text-2xl">📝</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Users -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Users</p>
+                        <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{{ total_users }}</p>
+                    </div>
+                    <div class="bg-green-100 dark:bg-green-900/30 rounded-full p-3">
+                        <span class="text-2xl">👥</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admins -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Admins</p>
+                        <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{{ total_admins }}</p>
+                    </div>
+                    <div class="bg-purple-100 dark:bg-purple-900/30 rounded-full p-3">
+                        <span class="text-2xl">👑</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regular Users -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Regular Users</p>
+                        <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">{{ total_regular_users }}</p>
+                    </div>
+                    <div class="bg-yellow-100 dark:bg-yellow-900/30 rounded-full p-3">
+                        <span class="text-2xl">📖</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mb-10">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+            <div class="flex flex-wrap gap-4">
+                <a href="{% url 'blog-create' %}" class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-sm transition-colors">
+                    <span class="mr-2">✍️</span> Write Post
+                </a>
+                <a href="{% url 'user-management' %}" class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 shadow-sm transition-colors">
+                    <span class="mr-2">👥</span> Manage Users
+                </a>
+                <a href="{% url 'blog-list' %}" class="inline-flex items-center px-5 py-3 rounded-lg text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 shadow-sm transition-colors">
+                    <span class="mr-2">📄</span> View All Posts
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Posts -->
+        <div>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Recent Posts</h2>
+            {% if recent_posts %}
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {% for post in recent_posts %}
+                            <li class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                    <div class="flex-1 min-w-0">
+                                        <a href="{% url 'blog-detail' id=post.id %}" class="text-base font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block">
+                                            {{ post.title }}
+                                        </a>
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            by {{ post.author.first_name|default:post.author.username }} &middot; {{ post.created_at|date:"M d, Y" }}
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center space-x-3 flex-shrink-0">
+                                        <a href="{% url 'blog-edit' id=post.id %}" class="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-300 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 transition-colors">
+                                            Edit
+                                        </a>
+                                        <form method="post" action="{% url 'blog-delete' id=post.id %}" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium text-red-700 bg-red-100 hover:bg-red-200 dark:text-red-300 dark:bg-red-900/30 dark:hover:bg-red-900/50 transition-colors">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center">
+                    <span class="text-4xl mb-3 block">📭</span>
+                    <p class="text-gray-500 dark:text-gray-400">No posts yet. Be the first to write one!</p>
+                    <a href="{% url 'blog-create' %}" class="mt-4 inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-colors">
+                        Write Your First Post
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

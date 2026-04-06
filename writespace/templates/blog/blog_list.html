@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load avatar_tags %}
+
+{% block title %}Blogs — WriteSpace{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 space-y-4 sm:space-y-0">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">All Blog Posts</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Browse the latest posts from the community</p>
+        </div>
+        <a href="{% url 'blog-create' %}" class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-sm transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Write New Post
+        </a>
+    </div>
+
+    {% if posts %}
+        <!-- Posts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for post in posts %}
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 {% if post.author.is_staff %}border-purple-500{% else %}border-blue-500{% endif %} hover:shadow-md transition-shadow flex flex-col">
+                    <div class="p-6 flex flex-col flex-1">
+                        <!-- Title -->
+                        <a href="{% url 'blog-detail' id=post.id %}" class="text-xl font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-2">
+                            {{ post.title }}
+                        </a>
+
+                        <!-- Excerpt -->
+                        <p class="mt-3 text-sm text-gray-600 dark:text-gray-400 line-clamp-3 flex-1">
+                            {{ post.content|truncatewords:30 }}
+                        </p>
+
+                        <!-- Footer -->
+                        <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                {% avatar post.author %}
+                                <div>
+                                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        {{ post.author.first_name|default:post.author.username }}
+                                    </p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                        {{ post.created_at|date:"M d, Y" }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {% if user.is_staff or post.author == user %}
+                                <a href="{% url 'blog-edit' id=post.id %}" class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Edit
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-16">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+                <svg class="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No posts yet</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Be the first to share something with the community!</p>
+            <a href="{% url 'blog-create' %}" class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-sm transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Write Your First Post
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

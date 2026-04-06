@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}WriteSpace — Share Your Stories{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 dark:from-blue-800 dark:via-blue-900 dark:to-indigo-950">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 25% 25%, white 1px, transparent 1px), radial-gradient(circle at 75% 75%, white 1px, transparent 1px); background-size: 50px 50px;"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
+        <div class="text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+                Share Your Stories with
+                <span class="block text-blue-200 mt-2">the World</span>
+            </h1>
+            <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-blue-100 leading-relaxed">
+                WriteSpace is a modern blogging platform where writers connect, share ideas, and inspire others. Start writing today and let your voice be heard.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'blog-list' %}" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-200">
+                        Browse Blogs
+                    </a>
+                    <a href="{% url 'blog-create' %}" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-blue-700 transition-all duration-200">
+                        ✍️ Write a Post
+                    </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 shadow-lg hover:shadow-xl transition-all duration-200">
+                        Get Started — It's Free
+                    </a>
+                    <a href="{% url 'login' %}" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-blue-700 transition-all duration-200">
+                        Sign In
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16 sm:py-24 bg-white dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 sm:mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                Why Choose WriteSpace?
+            </h2>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400">
+                Everything you need to create, share, and manage your blog content.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="relative p-8 bg-gray-50 dark:bg-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/40 text-2xl mb-5">
+                    ✏️
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                    Easy Writing
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    A clean, distraction-free editor that lets you focus on what matters most — your words and ideas.
+                </p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="relative p-8 bg-gray-50 dark:bg-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-green-100 dark:bg-green-900/40 text-2xl mb-5">
+                    🌍
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                    Share Globally
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    Publish your posts and reach readers from around the world. Your stories deserve an audience.
+                </p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="relative p-8 bg-gray-50 dark:bg-gray-700 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-purple-100 dark:bg-purple-900/40 text-2xl mb-5">
+                    🔒
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                    Secure & Reliable
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    Built with security in mind. Your account and content are protected with industry-standard practices.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Posts Section -->
+{% if latest_posts %}
+<section class="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 sm:mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+                Latest Posts
+            </h2>
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-400">
+                See what our community has been writing about recently.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for post in latest_posts %}
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-200 overflow-hidden flex flex-col">
+                <div class="h-2 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+                <div class="p-6 flex flex-col flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                        {{ post.title }}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1 line-clamp-3">
+                        {{ post.content|truncatewords:30 }}
+                    </p>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center space-x-2">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-600 text-white text-xs">
+                                {{ post.author.first_name|default:post.author.username|truncatechars:1 }}
+                            </span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ post.author.first_name|default:post.author.username }}
+                            </span>
+                        </div>
+                        <span class="text-xs text-gray-400 dark:text-gray-500">
+                            {{ post.created_at|date:"M d, Y" }}
+                        </span>
+                    </div>
+                    <div class="mt-4">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'blog-detail' id=post.id %}" class="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                                Read more →
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                                Read more →
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-12">
+            {% if user.is_authenticated %}
+                <a href="{% url 'blog-list' %}" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-sm transition-all duration-200">
+                    View All Posts
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-sm transition-all duration-200">
+                    Sign In to View All Posts
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+{% if not user.is_authenticated %}
+<section class="py-16 sm:py-24 bg-white dark:bg-gray-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+            Ready to Start Writing?
+        </h2>
+        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+            Join our community of writers and share your unique perspective with the world.
+        </p>
+        <div class="mt-8">
+            <a href="{% url 'register' %}" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-lg hover:shadow-xl transition-all duration-200">
+                Create Your Account
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{% if post %}Edit Post{% else %}Write New Post{% endif %} — WriteSpace{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Gradient Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-t-2xl px-8 py-8 shadow-lg">
+            <h1 class="text-3xl font-bold text-white">
+                {% if post %}✏️ Edit Post{% else %}✍️ Write New Post{% endif %}
+            </h1>
+            <p class="mt-2 text-blue-100">
+                {% if post %}Update your blog post below.{% else %}Share your thoughts with the world.{% endif %}
+            </p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-b-2xl shadow-lg p-8">
+            <!-- Non-field errors -->
+            {% if form.non_field_errors %}
+                <div class="mb-6 px-4 py-3 rounded-lg bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800 text-sm font-medium">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Title Field -->
+                <div class="mb-6">
+                    <label for="id_title" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.title.label }}
+                    </label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400">
+                            {% for error in form.title.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Content Field -->
+                <div class="mb-8">
+                    <label for="id_content" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        {{ form.content.label }}
+                    </label>
+                    {{ form.content }}
+                    {% if form.content.errors %}
+                        <div class="mt-2 text-sm text-red-600 dark:text-red-400">
+                            {% for error in form.content.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <a href="{% if post %}{% url 'blog-detail' id=post.id %}{% else %}{% url 'blog-list' %}{% endif %}" class="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-6 py-2.5 rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 shadow-sm transition-colors">
+                        {% if post %}Update Post{% else %}Publish Post{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
